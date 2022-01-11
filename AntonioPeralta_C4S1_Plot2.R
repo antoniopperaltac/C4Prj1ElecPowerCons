@@ -27,7 +27,6 @@ dataconsByDate <- subset(datacons, Date == "2007-02-01" | Date == "2007-02-3")
 # -------------------------------------------------------------------------
 dataconsByDate$Global_active_power <- as.numeric(dataconsByDate$Global_active_power)
 
-str(dataconsByDate)
 
 # 5th) Plot2
 # ----------
