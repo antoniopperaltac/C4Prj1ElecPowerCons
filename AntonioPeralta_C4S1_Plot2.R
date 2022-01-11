@@ -8,31 +8,51 @@
 # Plot 2: Global Active Power by Date Days (Thu-Fri-Sat)
 # -------------------------------------------------------------
 
-# 1st) Read folder and dataset file (.txt format)
+# 1st) Preparing the Data
+# 1.1) Read folder and dataset file (.txt format)
 # -----------------------------------------------
 datacons <- read.table(file = "data/housePowerCons.txt", sep = ";" , header = TRUE)
 
 
-# 2nd) Change data type (chr) of column Date to data type (Date)
-# --------------------------------------------------------------
+# 1.2) Create new column joining Date and Time Column
+# ----------------------------------------------
+datacons$DateTime <- paste(datacons$Date, datacons$Time, sep = " ")
+
+
+# 1.3) Change data type of column DateTime
+# (chr) of column DateTime to data type Posixlt (DateTime)
+# ----------------------------------------------------------------------
+datacons$DateTime <- strptime(datacons$DateTime, 
+                              format="%d/%m/%Y %H:%M:%S")
+
+str(datacons)
+
 datacons$Date <- as.Date(datacons$Date, format="%d/%m/%Y")
 
+str(datacons)
 
-# 3rd) Subsetting and Create dataset with Date Range Specified: 1st/3rd Feb 2007
+
+# 1.4) Subsetting and Create dataset with Date Range Specified: 1st/2nd Feb 2007
 # ------------------------------------------------------------------------------
-dataconsByDate <- subset(datacons, Date == "2007-02-01" | Date == "2007-02-3")
+dataByDate <- subset(datacons, Date == "2007-02-01" | Date == "2007-02-02")
+
+str(dataByDate)
+
+# 1.5) Change data type of column Global_active_power
+# (chr) of column Global_active_power to data type numeric
+# --------------------------------------------------------
+dataByDate$Global_active_power <- as.numeric(
+        dataByDate$Global_active_power,
+        na.omit(dataByDate$Global_active_power)
+)
+
+str(dataByDate)
 
 
-# 4th) Converting Global_active_power column data type character to numeric 
-# -------------------------------------------------------------------------
-dataconsByDate$Global_active_power <- as.numeric(dataconsByDate$Global_active_power)
-
-
-# 5th) Plot2
-# ----------
-plot(dataconsByDate$Date, 
-     dataconsByDate$Global_active_power,
+# 2nd) Create Plot2: 
+# Global Active Power by Date Days (Thu-Fri-Sat)
+# ----------------------------------------------
+plot(dataByDate$DateTime, dataByDate$Global_active_power,
      type = "l",
      ylab = "Global Active Power(kilowatt)",
-     xlab = " "
-     )
+     xlab = " ")
