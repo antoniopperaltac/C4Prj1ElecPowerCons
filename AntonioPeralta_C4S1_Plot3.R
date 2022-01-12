@@ -54,7 +54,7 @@ dataByDate$Sub_metering_2 <- as.numeric(
 # --------------------------------------------------------
 # 2.1 Setting Margin
 # ------------------
-par(mar=c(bottom=0, left=0, top=0, right=0))
+par(mar=c(bottom=4, left=4, top=0, right=2))
 
 # 2.2a Plot 1st Variable
 # ----------------------
